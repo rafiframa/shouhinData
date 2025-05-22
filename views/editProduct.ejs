@@ -1,0 +1,453 @@
+<!-- views/editProduct.ejs -->
+<%- include('./layout/header') %>
+
+    <div class="product-detail">
+        <div class="product-header">
+            <h2 class="product-title">
+                編集: <%= product.product_name %>
+            </h2>
+            <span class="product-code">商品コード: <%= product.product_code %></span>
+        </div>
+
+        <form id="editProductForm" class="edit-form">
+            <!-- Basic Product Info -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="product_name">商品名 *</label>
+                    <input type="text" id="product_name" name="product_name" value="<%= product.product_name %>"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="list_price">定価 *</label>
+                    <input type="number" id="list_price" name="list_price" value="<%= product.list_price %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">商品画像URL</label>
+                    <input type="url" id="image" name="image" value="<%= product.image || '' %>">
+                </div>
+            </div>
+
+            <!-- Three-column grid for detailed information -->
+            <div class="product-grid three-columns">
+                <div class="info-section">
+                    <h3>基本情報</h3>
+
+                    <div class="form-group">
+                        <label for="order_number">発注番号</label>
+                        <input type="text" id="order_number" name="order_number"
+                            value="<%= product.order_number || '' %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_type">商品カテゴリー</label>
+                        <select id="product_type" name="product_type">
+                            <option value="">選択してください</option>
+                            <option value="ツール" <%=product.product_type==='ツール' ? 'selected' : '' %>>ツール</option>
+                            <option value="部品" <%=product.product_type==='部品' ? 'selected' : '' %>>部品</option>
+                            <option value="材料" <%=product.product_type==='材料' ? 'selected' : '' %>>材料</option>
+                            <option value="アクセサリー" <%=product.product_type==='アクセサリー' ? 'selected' : '' %>>アクセサリー
+                            </option>
+                            <option value="その他" <%=product.product_type==='その他' ? 'selected' : '' %>>その他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sales_status">販売状況</label>
+                        <select id="sales_status" name="sales_status">
+                            <option value="">選択してください</option>
+                            <option value="販売中" <%=product.sales_status==='販売中' ? 'selected' : '' %>>販売中</option>
+                            <option value="在庫僅少" <%=product.sales_status==='在庫限り' ? 'selected' : '' %>>在庫限り</option>
+                            <option value="在庫切れ" <%=product.sales_status==='販売終了' ? 'selected' : '' %>>販売終了</option>
+                            <option value="販売終了" <%=product.sales_status==='準備中' ? 'selected' : '' %>>準備中</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jan_code">JANコード</label>
+                        <input type="text" id="jan_code" name="jan_code" value="<%= product.jan_code || '' %>">
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>仕入情報</h3>
+
+                    <div class="form-group">
+                        <label for="supplier_product_code">仕入先商品コード</label>
+                        <input type="text" id="supplier_product_code" name="supplier_product_code"
+                            value="<%= product.supplier_product_code || '' %>">
+                    </div>
+
+                    <div class="currency-pair">
+                        <div class="form-group">
+                            <label for="supplier_cost_local">仕入原価</label>
+                            <input type="number" step="0.01" id="supplier_cost_local" name="supplier_cost_local"
+                                value="<%= product.supplier_cost_local || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplier_cost_currency">通貨</label>
+                            <select id="supplier_cost_currency" name="supplier_cost_currency">
+                                <option value="">選択</option>
+                                <option value="JPY" <%=product.supplier_cost_currency==='JPY' ? 'selected' : '' %>>JPY
+                                </option>
+                                <option value="USD" <%=product.supplier_cost_currency==='USD' ? 'selected' : '' %>>USD
+                                </option>
+                                <option value="EUR" <%=product.supplier_cost_currency==='EUR' ? 'selected' : '' %>>EUR
+                                </option>
+                                <option value="CNY" <%=product.supplier_cost_currency==='CNY' ? 'selected' : '' %>>CNY
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>製品仕様</h3>
+
+                    <div class="form-group">
+                        <label for="dimensions_mm">寸法 (mm)</label>
+                        <input type="text" id="dimensions_mm" name="dimensions_mm"
+                            value="<%= product.dimensions_mm || '' %>" placeholder="例: 100x50x25">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight_g">重量 (g)</label>
+                        <input type="number" step="0.1" id="weight_g" name="weight_g"
+                            value="<%= product.weight_g || '' %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="material">材質</label>
+                        <input type="text" id="material" name="material" value="<%= product.material || '' %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="durability_years">耐用年数</label>
+                        <input type="number" id="durability_years" name="durability_years"
+                            value="<%= product.durability_years || '' %>">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Specifications -->
+            <div class="info-section">
+                <h3>その他仕様</h3>
+                <div class="form-group">
+                    <textarea id="other_specs" name="other_specs" rows="4"
+                        placeholder="その他の仕様や特記事項"><%= product.other_specs || '' %></textarea>
+                </div>
+            </div>
+
+            <!-- Resource Links -->
+            <div class="info-section">
+                <h3>リソースリンク</h3>
+
+                <div class="form-group">
+                    <label for="label_link">ラベルリンク</label>
+                    <input type="url" id="label_link" name="label_link" value="<%= product.label_link || '' %>"
+                        placeholder="https://example.com/label">
+                </div>
+
+                <div class="form-group">
+                    <label for="packaging_link">梱包リンク</label>
+                    <input type="url" id="packaging_link" name="packaging_link"
+                        value="<%= product.packaging_link || '' %>" placeholder="https://example.com/packaging">
+                </div>
+
+                <div class="form-group">
+                    <label for="manual_link">マニュアルリンク</label>
+                    <input type="url" id="manual_link" name="manual_link" value="<%= product.manual_link || '' %>"
+                        placeholder="https://example.com/manual">
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <a href="/product/<%= product.product_code %>" class="btn cancel-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-right: 5px; vertical-align: text-bottom;">
+                        <path d="M18 6L6 18"></path>
+                        <path d="M6 6l12 12"></path>
+                    </svg>
+                    キャンセル
+                </a>
+                <button type="submit" class="btn submit-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-right: 5px; vertical-align: text-bottom;">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    保存
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">保存中...</div>
+    </div>
+
+    <script>
+        const editForm = document.getElementById('editProductForm');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Show loading overlay
+            loadingOverlay.style.display = 'flex';
+
+            // Prepare form data
+            const formData = new FormData(editForm);
+            const productData = {};
+
+            for (let [key, value] of formData.entries()) {
+                // Convert empty strings to null for optional fields
+                productData[key] = value.trim() === '' ? null : value.trim();
+            }
+
+            // Convert numeric fields
+            if (productData.list_price) productData.list_price = parseFloat(productData.list_price);
+            if (productData.supplier_cost_local) productData.supplier_cost_local = parseFloat(productData.supplier_cost_local);
+            if (productData.weight_g) productData.weight_g = parseFloat(productData.weight_g);
+            if (productData.durability_years) productData.durability_years = parseInt(productData.durability_years);
+
+            try {
+                const response = await fetch(`/api/products/<%= product.product_code %>`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || '商品の更新に失敗しました');
+                }
+
+                // Success - redirect to product detail page
+                window.location.href = `/product/<%= product.product_code %>?edited=<%= product.product_code %>`;
+
+            } catch (error) {
+                console.error('Error updating product:', error);
+                showNotification(error.message || '商品の更新に失敗しました', 'error');
+            } finally {
+                // Hide loading overlay
+                loadingOverlay.style.display = 'none';
+            }
+        });
+
+        // Notification function
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+
+        // Form validation
+        const requiredFields = document.querySelectorAll('input[required]');
+        requiredFields.forEach(field => {
+            field.addEventListener('blur', validateField);
+            field.addEventListener('input', clearFieldError);
+        });
+
+        function validateField(e) {
+            const field = e.target;
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                showFieldError(field, 'この項目は必須です');
+            } else {
+                field.classList.remove('error');
+                clearFieldError(field);
+            }
+        }
+
+        function clearFieldError(e) {
+            const field = e.target;
+            field.classList.remove('error');
+            const errorElement = field.parentNode.querySelector('.field-error');
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+        function showFieldError(field, message) {
+            clearFieldError({ target: field });
+            const errorElement = document.createElement('div');
+            errorElement.className = 'field-error';
+            errorElement.textContent = message;
+            errorElement.style.color = 'var(--danger)';
+            errorElement.style.fontSize = '0.875rem';
+            errorElement.style.marginTop = '0.25rem';
+            field.parentNode.appendChild(errorElement);
+        }
+    </script>
+
+    <style>
+        /* Additional styles specific to edit form */
+        .edit-form {
+            background-color: var(--white);
+        }
+
+        .form-section {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .edit-form .info-section {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .edit-form .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .edit-form .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .edit-form .form-group input,
+        .edit-form .form-group select,
+        .edit-form .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+
+        .edit-form .form-group input:focus,
+        .edit-form .form-group select:focus,
+        .edit-form .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 112, 84, 0.1);
+        }
+
+        .edit-form .form-group input.error {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .edit-form .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Currency pair styling for edit form */
+        .edit-form .currency-pair {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .edit-form .currency-pair .form-group:first-child {
+            flex: 2;
+        }
+
+        .edit-form .currency-pair .form-group:last-child {
+            flex: 1;
+        }
+
+        /* Form actions */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Field error styles */
+        .field-error {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .edit-form .product-grid.three-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .edit-form .currency-pair {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <!-- <%- include('./layout/footer') %> -->

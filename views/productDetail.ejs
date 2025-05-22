@@ -1,0 +1,298 @@
+<!-- views/productDetail.ejs -->
+<%- include('./layout/header') %>
+
+  <div class="product-detail">
+    <div class="product-header">
+      <h2 class="product-title">
+        <%= product.product_name %>
+          <span class="product-price">
+            　<%= product.list_price?.toLocaleString() %>円
+          </span>
+      </h2>
+      <span class="product-code">商品コード: <%= product.product_code %></span>
+    </div>
+
+    <% if (product.image) { %>
+      <div class="product-image">
+        <img src="<%= product.image %>" alt="<%= product.product_name %>" class="product-img">
+      </div>
+      <% } %>
+
+
+
+        <div class="product-grid three-columns">
+          <div class="info-section">
+            <h3>基本情報</h3>
+            
+            <div class="info-item">
+              <span class="info-label">発注番号</span>
+              <span class="info-value">
+                <%= product.order_number || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">商品カテゴリー</span>
+              <span class="info-value">
+                <%= product.product_type || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">販売状況</span>
+              <span class="info-value">
+                <%= product.sales_status || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">JANコード</span>
+              <span class="info-value">
+                <%= product.jan_code || 'なし' %>
+              </span>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <h3>仕入情報</h3>
+
+            <div class="info-item">
+              <span class="info-label">仕入先商品コード</span>
+              <span class="info-value">
+                <%= product.supplier_product_code || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">仕入原価</span>
+              <span class="info-value">
+                <% if (product.supplier_cost_local && product.supplier_cost_currency) { %>
+                  <%= product.supplier_cost_local.toLocaleString() %>
+                    <%= product.supplier_cost_currency %>
+                      <% } else { %>
+                        なし
+                        <% } %>
+              </span>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <h3>製品仕様</h3>
+
+            <div class="info-item">
+              <span class="info-label">寸法 (mm)</span>
+              <span class="info-value">
+                <%= product.dimensions_mm || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">重量 (g)</span>
+              <span class="info-value">
+                <%= product.weight_g || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">材質</span>
+              <span class="info-value">
+                <%= product.material || 'なし' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">耐用年数</span>
+              <span class="info-value">
+                <%= product.durability_years ? product.durability_years + '年' : 'なし' %>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h3>その他仕様</h3>
+          <div class="info-item">
+            <span class="info-value">
+              <%= product.other_specs || '情報なし' %>
+            </span>
+          </div>
+        </div>
+
+        <div class="resource-links">
+          <% if (product.label_link) { %>
+            <a href="<%= product.label_link %>" target="_blank" class="resource-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              ラベル
+            </a>
+            <% } %>
+
+              <% if (product.packaging_link) { %>
+                <a href="<%= product.packaging_link %>" target="_blank" class="resource-link">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                    <path
+                      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                  梱包
+                </a>
+                <% } %>
+
+                  <% if (product.manual_link) { %>
+                    <a href="<%= product.manual_link %>" target="_blank" class="resource-link">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                      </svg>
+                      マニュアル
+                    </a>
+                    <% } %>
+        </div>
+
+        <div class="product-meta">
+          <small class="last-updated">最終更新: <%= new Date(product.updated_at).toLocaleString('ja-JP') %></small>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+          <a href="/" class="btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            商品一覧に戻る
+          </a>
+          <div style="display: flex; gap: 1rem;">
+            <a href="/product/<%= product.product_code %>/edit" class="btn" style="background-color: var(--warn);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+              編集
+            </a>
+            <button id="deleteProductBtn" class="btn btn-danger">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+              商品を削除
+            </button>
+          </div>
+        </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteConfirmModal" class="modal">
+    <div class="modal-content delete-modal">
+      <div class="modal-header">
+        <h2>商品削除の確認</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-message">「<strong>
+            <%= product.product_name %>
+          </strong>」を削除してもよろしいですか？</p>
+        <p class="warning-message">この操作は元に戻すことができません。</p>
+
+        <div class="form-actions">
+          <button type="button" class="btn cancel-btn" id="cancelDeleteBtn">キャンセル</button>
+          <button type="button" class="btn btn-danger confirm-delete-btn" id="confirmDeleteBtn"
+            data-product-code="<%= product.product_code %>">削除する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Delete Modal functionality
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    const deleteProductBtn = document.getElementById('deleteProductBtn');
+    const closeDeleteModal = document.querySelector('#deleteConfirmModal .close-modal');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    // Open delete modal
+    deleteProductBtn.addEventListener('click', () => {
+      deleteModal.style.display = 'block';
+      document.body.classList.add('modal-open');
+    });
+
+    // Close delete modal functions
+    function closeDeleteModalFunction() {
+      deleteModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    }
+
+    closeDeleteModal.addEventListener('click', closeDeleteModalFunction);
+    cancelDeleteBtn.addEventListener('click', closeDeleteModalFunction);
+
+    // Close if clicking outside modal content
+    window.addEventListener('click', (event) => {
+      if (event.target === deleteModal) {
+        closeDeleteModalFunction();
+      }
+    });
+
+    // Handle delete confirmation
+    confirmDeleteBtn.addEventListener('click', async () => {
+      const productCode = confirmDeleteBtn.getAttribute('data-product-code');
+
+      try {
+        const response = await fetch(`/api/products/${productCode}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || '商品の削除に失敗しました');
+        }
+
+        // Redirect to products page
+        window.location.href = '/?deleted=' + encodeURIComponent(productCode);
+
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        showNotification(error.message || '商品の削除に失敗しました', 'error');
+        closeDeleteModalFunction();
+      }
+    });
+
+    // Notification function
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+
+      document.body.appendChild(notification);
+
+      // Show notification
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 10);
+
+      // Remove notification after 5 seconds
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 5000);
+    }
+  </script>
+
+  <!-- <%- include('./layout/footer') %> -->
