@@ -44,10 +44,10 @@
                         <label for="product_type">商品カテゴリー</label>
                         <select id="product_type" name="product_type">
                             <option value="">選択してください</option>
-                            <option value="ツール" <%=product.product_type==='ツール' ? 'selected' : '' %>>ツール</option>
-                            <option value="部品" <%=product.product_type==='部品' ? 'selected' : '' %>>部品</option>
-                            <option value="材料" <%=product.product_type==='材料' ? 'selected' : '' %>>材料</option>
-                            <option value="アクセサリー" <%=product.product_type==='アクセサリー' ? 'selected' : '' %>>アクセサリー
+                            <option value="パワーボックス" <%=product.product_type==='パワーボックス' ? 'selected' : '' %>>パワーボックス</option>
+                            <option value="ファームゲート" <%=product.product_type==='ファームゲート' ? 'selected' : '' %>>ファームゲート</option>
+                            <option value="ワイヤー" <%=product.product_type==='ワイヤー' ? 'selected' : '' %>>ワイヤー</option>
+                            <option value="捕育関連" <%=product.product_type==='捕育関連' ? 'selected' : '' %>>捕育関連
                             </option>
                             <option value="その他" <%=product.product_type==='その他' ? 'selected' : '' %>>その他</option>
                         </select>
@@ -58,9 +58,9 @@
                         <select id="sales_status" name="sales_status">
                             <option value="">選択してください</option>
                             <option value="販売中" <%=product.sales_status==='販売中' ? 'selected' : '' %>>販売中</option>
-                            <option value="在庫僅少" <%=product.sales_status==='在庫限り' ? 'selected' : '' %>>在庫限り</option>
-                            <option value="在庫切れ" <%=product.sales_status==='販売終了' ? 'selected' : '' %>>販売終了</option>
-                            <option value="販売終了" <%=product.sales_status==='準備中' ? 'selected' : '' %>>準備中</option>
+                            <option value="受注生産" <%=product.sales_status==='受注生産' ? 'selected' : '' %>>受注生産</option>
+                            <option value="販売停止中" <%=product.sales_status==='販売停止中' ? 'selected' : '' %>>販売停止中</option>
+                            <option value="廃盤" <%=product.sales_status==='廃盤' ? 'selected' : '' %>>廃盤</option>
                         </select>
                     </div>
 
