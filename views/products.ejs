@@ -20,7 +20,7 @@
                 <div class="search-container">
                     <form class="search-form" method="GET" action="/">
                         <div class="search-group">
-                            <input type="text" name="search" id="searchName" placeholder="商品名で検索..." 
+                            <input type="text" name="search" id="searchName" placeholder="商品名・カテゴリーで検索..." 
                                    value="<%= searchParams.search %>">
                         </div>
                         <div class="search-group">
@@ -29,7 +29,7 @@
                                 <option value="パワーボックス" <%= searchParams.product_type === 'パワーボックス' ? 'selected' : '' %>>パワーボックス</option>
                                 <option value="ファームゲート" <%= searchParams.product_type === 'ファームゲート' ? 'selected' : '' %>>ファームゲート</option>
                                 <option value="ワイヤー" <%= searchParams.product_type === 'ワイヤー' ? 'selected' : '' %>>ワイヤー</option>
-                                <option value="捕育関連" <%= searchParams.product_type === '捕育関連' ? 'selected' : '' %>>捕育関連</option>
+                                <option value="保育関連" <%= searchParams.product_type === '保育関連' ? 'selected' : '' %>>保育関連</option>
                                 <option value="その他" <%= searchParams.product_type === 'その他' ? 'selected' : '' %>>その他</option>
                             </select>
                         </div>
@@ -185,7 +185,7 @@
                                             <option value="パワーボックス">パワーボックス</option>
                                             <option value="ファームゲート">ファームゲート</option>
                                             <option value="ワイヤー">ワイヤー</option>
-                                            <option value="捕育関連">捕育関連</option>
+                                            <option value="保育関連">保育関連</option>
                                             <option value="その他">その他</option>
                                         </select>
                                     </div>
