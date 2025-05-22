@@ -6,7 +6,7 @@
       <h2 class="product-title">
         <%= product.product_name %>
           <span class="product-price">
-            　<%= product.list_price?.toLocaleString() %>円
+            　<%= (+product.list_price).toLocaleString('en-US', {maximumFractionDigits: 0 }) %>円
           </span>
       </h2>
       <span class="product-code">商品コード: <%= product.product_code %></span>
@@ -17,8 +17,6 @@
         <img src="<%= product.image %>" alt="<%= product.product_name %>" class="product-img">
       </div>
       <% } %>
-
-
 
         <div class="product-grid three-columns">
           <div class="info-section">
@@ -67,7 +65,7 @@
               <span class="info-label">仕入原価</span>
               <span class="info-value">
                 <% if (product.supplier_cost_local && product.supplier_cost_currency) { %>
-                  <%= product.supplier_cost_local.toLocaleString() %>
+                  <%= +product.supplier_cost_local.toLocaleString() %>
                     <%= product.supplier_cost_currency %>
                       <% } else { %>
                         なし
