@@ -5,15 +5,6 @@ const path = require('path');
 const productRoutes = require('./routes/productRoutes');
 const { sequelize } = require('./models');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  protocol: 'postgres',
-  logging: false,
-  dialectOptions: {
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-  }
-});
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
