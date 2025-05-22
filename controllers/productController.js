@@ -11,9 +11,14 @@ exports.getAllProducts = async (req, res) => {
     const whereConditions = {};
 
     if (search && search.trim()) {
-      whereConditions.product_name = {
-        [Op.iLike]: `%${search.trim()}%`
-      };
+      const searchWords = search.trim().split(/\s+/); // split by spaces
+
+      whereConditions[Op.and] = searchWords.map(word => ({
+        [Op.or]: [
+          { product_name: { [Op.iLike]: `%${word}%` } },
+          { product_type: { [Op.iLike]: `%${word}%` } }
+        ]
+      }));
     }
 
     if (product_type && product_type.trim()) {
