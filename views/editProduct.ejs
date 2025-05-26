@@ -6,12 +6,20 @@
             <h2 class="product-title">
                 編集: <%= product.product_name %>
             </h2>
-            <span class="product-code">商品コード: <%= product.product_code %></span>
+            <!-- <span class="product-code">商品コード: <%= product.product_code %></span> -->
         </div>
 
         <form id="editProductForm" class="edit-form">
             <!-- Basic Product Info -->
+
             <div class="form-section">
+
+                <div class="form-group">
+                    <label for="product_code">商品コード *</label>
+                    <input type="text" id="product_code" name="product_code" value="<%= product.product_code %>"
+                        required>
+                </div>
+
                 <div class="form-group">
                     <label for="product_name">商品名 *</label>
                     <input type="text" id="product_name" name="product_name" value="<%= product.product_name %>"
@@ -166,7 +174,7 @@
 
             <!-- Form Actions -->
             <div class="form-actions">
-                <a href="/product/<%= product.product_code %>" class="btn cancel-btn">
+                <a href="/product/<%= product.id %>" class="btn cancel-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round"
                         style="margin-right: 5px; vertical-align: text-bottom;">
@@ -220,7 +228,7 @@
             if (productData.durability_years) productData.durability_years = parseInt(productData.durability_years);
 
             try {
-                const response = await fetch(`/api/products/<%= product.product_code %>`, {
+                const response = await fetch(`/api/products/<%= product.id %>`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -235,7 +243,7 @@
                 }
 
                 // Success - redirect to product detail page
-                window.location.href = `/product/<%= product.product_code %>?edited=<%= product.product_code %>`;
+                window.location.href = `/product/<%= product.id %>?edited=<%= product.id %>`;
 
             } catch (error) {
                 console.error('Error updating product:', error);

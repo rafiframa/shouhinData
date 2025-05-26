@@ -131,7 +131,7 @@
                                             </tr>
                                             <% } else { %>
                                                 <% products.forEach(product=> { %>
-                                                    <tr onclick="location.href='/product/<%= product.product_code %>'">
+                                                    <tr onclick="location.href='/product/<%= product.id %>'">
                                                         <td>
                                                             <%= product.product_code %>
                                                         </td>

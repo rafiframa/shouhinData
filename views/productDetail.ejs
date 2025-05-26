@@ -171,7 +171,7 @@
           </a>
           <% if (user && user.role==='admin' ) { %>
             <div style="display: flex; gap: 1rem;">
-              <a href="/product/<%= product.product_code %>/edit" class="btn" style="background-color: var(--warn);">
+              <a href="/product/<%= product.id %>/edit" class="btn" style="background-color: var(--warn);">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round"
                   style="margin-right: 5px; vertical-align: text-bottom;">
@@ -211,7 +211,7 @@
         <div class="form-actions">
           <button type="button" class="btn cancel-btn" id="cancelDeleteBtn">キャンセル</button>
           <button type="button" class="btn btn-danger confirm-delete-btn" id="confirmDeleteBtn"
-            data-product-code="<%= product.product_code %>">削除する</button>
+            data-product-id="<%= product.id %>">削除する</button>
         </div>
       </div>
     </div>
@@ -249,10 +249,10 @@
 
     // Handle delete confirmation
     confirmDeleteBtn.addEventListener('click', async () => {
-      const productCode = confirmDeleteBtn.getAttribute('data-product-code');
+      const id = confirmDeleteBtn.getAttribute('data-product-id');
 
       try {
-        const response = await fetch(`/api/products/${productCode}`, {
+        const response = await fetch(`/api/products/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -265,7 +265,7 @@
         }
 
         // Redirect to products page
-        window.location.href = '/?deleted=' + encodeURIComponent(productCode);
+        window.location.href = '/?deleted=' + encodeURIComponent('<%= product.product_code %>');
 
       } catch (error) {
         console.error('Error deleting product:', error);

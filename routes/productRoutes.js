@@ -13,7 +13,7 @@ router.get('/product/:slug', requireAuth, productController.getProductDetail);
 // Admin only routes
 router.get('/product/:slug/edit', requireAdmin, productController.getEditProduct);
 router.post('/api/products', requireAdmin, productController.createProduct);
-router.put('/api/products/:productCode', requireAdmin, productController.updateProduct);
-router.delete('/api/products/:productCode', requireAdmin, productController.deleteProduct);
+router.put('/api/products/:id', requireAdmin, productController.updateProduct);
+router.delete('/api/products/:id', requireAdmin, productController.deleteProduct);
 
 module.exports = router;

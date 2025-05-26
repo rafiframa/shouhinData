@@ -105,7 +105,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductDetail = async (req, res) => {
   try {
     const slug = req.params.slug;
-    const product = await Product.findOne({ where: { product_code: slug } });
+    const product = await Product.findOne({ where: { id: slug } });
 
     if (!product) {
       return res.status(404).render('404', {
@@ -131,7 +131,7 @@ exports.getProductDetail = async (req, res) => {
 exports.getEditProduct = async (req, res) => {
   try {
     const slug = req.params.slug;
-    const product = await Product.findOne({ where: { product_code: slug } });
+    const product = await Product.findOne({ where: { id: slug } });
 
     if (!product) {
       return res.status(404).render('404', {
@@ -203,8 +203,7 @@ exports.createProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const productCode = req.params.productCode;
-
+    const id = req.params.id;
     // Validate required fields
     const { product_name, list_price } = req.body;
 
@@ -217,7 +216,7 @@ exports.updateProduct = async (req, res) => {
 
     // Find the product first to confirm it exists
     const product = await Product.findOne({
-      where: { product_code: productCode }
+      where: { id: id }
     });
 
     if (!product) {
@@ -235,7 +234,7 @@ exports.updateProduct = async (req, res) => {
 
     // Update the product
     const [updatedRowsCount] = await Product.update(updateData, {
-      where: { product_code: productCode }
+      where: { id: id }
     });
 
     if (updatedRowsCount === 0) {
@@ -247,7 +246,7 @@ exports.updateProduct = async (req, res) => {
 
     // Fetch the updated product
     const updatedProduct = await Product.findOne({
-      where: { product_code: productCode }
+      where: { id: id }
     });
 
     res.status(200).json({
@@ -266,11 +265,12 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const productCode = req.params.productCode;
+    const id = req.params.id;
+    console.log(req.params, "<===================================")
 
     // Find the product first to confirm it exists
     const product = await Product.findOne({
-      where: { product_code: productCode }
+      where: { id: id }
     });
 
     if (!product) {
@@ -282,7 +282,7 @@ exports.deleteProduct = async (req, res) => {
 
     // Delete the product
     await Product.destroy({
-      where: { product_code: productCode }
+      where: { id: id }
     });
 
     res.status(200).json({
