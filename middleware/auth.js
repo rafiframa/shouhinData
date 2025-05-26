@@ -4,7 +4,7 @@ const requireAuth = (req, res, next) => {
     console.log("user Authenticated")
     return next();
   }
-      console.log("req.isAuthenticated() = ", req.isAuthenticated(), "req.user.is_active = ", req.user.is_active)
+      console.log("req.isAuthenticated() = ", req.isAuthenticated(), "req.user = ", req.user)
   res.redirect('/login');
 };
 
