@@ -34,7 +34,7 @@ passport.use(new GoogleStrategy({
       user = await User.create({
         google_id: profile.id,
         email: email,
-        name: profile.displayName ?? email.split('@')[0], 
+        name: profile.displayName ?? email.split('@')[0],
         profile_picture: profile.photos[0]?.value,
         role: 'regular',
         access_token: accessToken,
@@ -49,9 +49,13 @@ passport.use(new GoogleStrategy({
 
     return done(null, user);
   } catch (error) {
-     const email = profile.emails[0].value;
-    console.log(email)
-    console.error('❌ Error in Google Strategy:', error);
+    const email = profile?.emails?.[0]?.value || 'unknown';
+    console.error('❌ Error in Google Strategy:', {
+      error: error.message,
+      stack: error.stack,
+      email: email,
+      profileId: profile?.id
+    });
     return done(error, null);
   }
 }));
