@@ -17,9 +17,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Session store
-const sessionStore = new SequelizeStore({
-  db: sequelize,
-});
+const sessionStore = new SequelizeStore({ db: sequelize });
+sessionStore.sync()
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
