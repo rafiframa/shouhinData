@@ -1,8 +1,10 @@
 // middleware/auth.js 
 const requireAuth = (req, res, next) => {
   if (req.isAuthenticated() && req.user.is_active) {
+    console.log("user Authenticated")
     return next();
   }
+      console.log("user not Authenticated")
   res.redirect('/login');
 };
 
