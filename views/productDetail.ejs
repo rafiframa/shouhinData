@@ -6,7 +6,7 @@
       <h2 class="product-title">
         <%= product.product_name %>
           <span class="product-price">
-            　<%= (+product.list_price).toLocaleString('en-US', {maximumFractionDigits: 0 }) %>円
+            ¥<%= (+product.list_price).toLocaleString('en-US', {maximumFractionDigits: 0 }) %>
           </span>
       </h2>
       <span class="product-code">商品コード: <%= product.product_code %></span>
@@ -21,32 +21,32 @@
         <div class="product-grid three-columns">
           <div class="info-section">
             <h3>基本情報</h3>
-            
+
             <div class="info-item">
               <span class="info-label">発注番号</span>
               <span class="info-value">
-                <%= product.order_number || 'なし' %>
+                <%= product.order_number || '（なし）' %>
               </span>
             </div>
 
             <div class="info-item">
               <span class="info-label">商品カテゴリー</span>
               <span class="info-value">
-                <%= product.product_type || 'なし' %>
+                <%= product.product_type || '（なし）' %>
               </span>
             </div>
 
             <div class="info-item">
               <span class="info-label">販売状況</span>
               <span class="info-value">
-                <%= product.sales_status || 'なし' %>
+                <%= product.sales_status || '（なし）' %>
               </span>
             </div>
 
             <div class="info-item">
               <span class="info-label">JANコード</span>
               <span class="info-value">
-                <%= product.jan_code || 'なし' %>
+                <%= product.jan_code || '（なし）' %>
               </span>
             </div>
           </div>
@@ -57,7 +57,7 @@
             <div class="info-item">
               <span class="info-label">仕入先商品コード</span>
               <span class="info-value">
-                <%= product.supplier_product_code || 'なし' %>
+                <%= product.supplier_product_code || '（なし）' %>
               </span>
             </div>
 
@@ -68,7 +68,7 @@
                   <%= +product.supplier_cost_local.toLocaleString() %>
                     <%= product.supplier_cost_currency %>
                       <% } else { %>
-                        なし
+                        （なし）
                         <% } %>
               </span>
             </div>
@@ -80,28 +80,28 @@
             <div class="info-item">
               <span class="info-label">寸法 (mm)</span>
               <span class="info-value">
-                <%= product.dimensions_mm || 'なし' %>
+                <%= product.dimensions_mm || '（なし）' %>
               </span>
             </div>
 
             <div class="info-item">
               <span class="info-label">重量 (g)</span>
               <span class="info-value">
-                <%= product.weight_g || 'なし' %>
+                <%= product.weight_g || '（なし）' %>
               </span>
             </div>
 
             <div class="info-item">
               <span class="info-label">材質</span>
               <span class="info-value">
-                <%= product.material || 'なし' %>
+                <%= product.material || '（なし）' %>
               </span>
             </div>
 
             <div class="info-item">
               <span class="info-label">耐用年数</span>
               <span class="info-value">
-                <%= product.durability_years ? product.durability_years + '年' : 'なし' %>
+                <%= product.durability_years ? product.durability_years + '年' : '（なし）' %>
               </span>
             </div>
           </div>
@@ -111,7 +111,7 @@
           <h3>その他仕様</h3>
           <div class="info-item">
             <span class="info-value">
-              <%= product.other_specs || '情報なし' %>
+              <%= product.other_specs || '（なし）' %>
             </span>
           </div>
         </div>
@@ -161,7 +161,7 @@
         </div>
 
         <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
-          <a href="/" class="btn">
+          <a href="/" class="btn cancel-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
               <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -169,25 +169,29 @@
             </svg>
             商品一覧に戻る
           </a>
-          <div style="display: flex; gap: 1rem;">
-            <a href="/product/<%= product.product_code %>/edit" class="btn" style="background-color: var(--warn);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
-                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-              </svg>
-              編集
-            </a>
-            <button id="deleteProductBtn" class="btn btn-danger">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
-              </svg>
-              商品を削除
-            </button>
-          </div>
+          <% if (user && user.role==='admin' ) { %>
+            <div style="display: flex; gap: 1rem;">
+              <a href="/product/<%= product.product_code %>/edit" class="btn" style="background-color: var(--warn);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right: 5px; vertical-align: text-bottom;">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                </svg>
+                編集
+              </a>
+              <button id="deleteProductBtn" class="btn btn-danger">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right: 5px; vertical-align: text-bottom;">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                商品を削除
+              </button>
+            </div>
+            <% } %>
         </div>
   </div>
 
@@ -293,4 +297,36 @@
     }
   </script>
 
-  <!-- <%- include('./layout/footer') %> -->
+  <style>
+    .product-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .product-title {
+      color: white;
+      margin: 0;
+    }
+
+    .product-price {
+      margin-left: 1rem;
+      font-weight: normal;
+      color: #d4f5e4;
+    }
+
+    .product-code {
+      display: block;
+      margin-top: 0.25rem;
+      color: #000000;
+    }
+
+    .product-detail {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  </style>
+
+  <%- include('./layout/footer') %>

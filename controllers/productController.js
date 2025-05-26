@@ -5,7 +5,12 @@ const { Op } = require('sequelize');
 exports.getAllProducts = async (req, res) => {
   try {
     // Extract search parameters from query
-    const { search, product_type, sales_status } = req.query;
+    const { search, product_type, sales_status, page } = req.query;
+
+    // Pagination settings
+    const itemsPerPage = 25;
+    const currentPage = parseInt(page) || 1;
+    const offset = (currentPage - 1) * itemsPerPage;
 
     // Build where conditions
     const whereConditions = {};
@@ -29,11 +34,18 @@ exports.getAllProducts = async (req, res) => {
       whereConditions.sales_status = sales_status.trim();
     }
 
-    // Fetch products with filtering
-    const products = await Product.findAll({
+    // Fetch products with filtering and pagination
+    const { count, rows: products } = await Product.findAndCountAll({
       where: whereConditions,
-      order: [['created_at', 'DESC']] // Show newest first
+      order: [['created_at', 'DESC']], // Show newest first
+      limit: itemsPerPage,
+      offset: offset
     });
+
+    // Calculate pagination info
+    const totalPages = Math.ceil(count / itemsPerPage);
+    const hasNextPage = currentPage < totalPages;
+    const hasPrevPage = currentPage > 1;
 
     // Check for delete success message
     let notification = null;
@@ -68,7 +80,18 @@ exports.getAllProducts = async (req, res) => {
         search: search || '',
         product_type: product_type || '',
         sales_status: sales_status || ''
-      }
+      },
+      pagination: {
+        currentPage,
+        totalPages,
+        hasNextPage,
+        hasPrevPage,
+        totalItems: count,
+        itemsPerPage,
+        startItem: offset + 1,
+        endItem: Math.min(offset + itemsPerPage, count)
+      },
+      user: req.user
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -87,7 +110,8 @@ exports.getProductDetail = async (req, res) => {
     if (!product) {
       return res.status(404).render('404', {
         title: 'Product Not Found',
-        message: '商品が見つかりません'
+        message: '商品が見つかりません',
+        user: req.user
       });
     }
 

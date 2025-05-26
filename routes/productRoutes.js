@@ -2,23 +2,18 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const { requireAuth, requireAdmin } = require('../middleware/auth');
 
-// Route for product listing
-router.get('/', productController.getAllProducts);
+// Public route for product listing (requires login)
+router.get('/', requireAuth, productController.getAllProducts);
 
-// Route for product detail
-router.get('/product/:slug', productController.getProductDetail);
+// Public route for product detail (requires login)
+router.get('/product/:slug', requireAuth, productController.getProductDetail);
 
-// Route for editing product
-router.get('/product/:slug/edit', productController.getEditProduct);
-
-// API route for adding a new product
-router.post('/api/products', productController.createProduct);
-
-// API route for updating a product
-router.put('/api/products/:productCode', productController.updateProduct);
-
-// API route for deleting a product
-router.delete('/api/products/:productCode', productController.deleteProduct);
+// Admin only routes
+router.get('/product/:slug/edit', requireAdmin, productController.getEditProduct);
+router.post('/api/products', requireAdmin, productController.createProduct);
+router.put('/api/products/:productCode', requireAdmin, productController.updateProduct);
+router.delete('/api/products/:productCode', requireAdmin, productController.deleteProduct);
 
 module.exports = router;

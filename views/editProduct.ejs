@@ -23,10 +23,10 @@
                     <input type="number" id="list_price" name="list_price" value="<%= product.list_price %>" required>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="image">商品画像URL</label>
                     <input type="url" id="image" name="image" value="<%= product.image || '' %>">
-                </div>
+                </div> -->
             </div>
 
             <!-- Three-column grid for detailed information -->
@@ -44,8 +44,10 @@
                         <label for="product_type">商品カテゴリー</label>
                         <select id="product_type" name="product_type">
                             <option value="">選択してください</option>
-                            <option value="パワーボックス" <%=product.product_type==='パワーボックス' ? 'selected' : '' %>>パワーボックス</option>
-                            <option value="ファームゲート" <%=product.product_type==='ファームゲート' ? 'selected' : '' %>>ファームゲート</option>
+                            <option value="パワーボックス" <%=product.product_type==='パワーボックス' ? 'selected' : '' %>>パワーボックス
+                            </option>
+                            <option value="ファームゲート" <%=product.product_type==='ファームゲート' ? 'selected' : '' %>>ファームゲート
+                            </option>
                             <option value="ワイヤー" <%=product.product_type==='ワイヤー' ? 'selected' : '' %>>ワイヤー</option>
                             <option value="保育関連" <%=product.product_type==='保育関連' ? 'selected' : '' %>>保育関連
                             </option>
@@ -146,19 +148,19 @@
                 <div class="form-group">
                     <label for="label_link">ラベルリンク</label>
                     <input type="url" id="label_link" name="label_link" value="<%= product.label_link || '' %>"
-                        placeholder="https://example.com/label">
+                        placeholder="例：https://example.com/label">
                 </div>
 
                 <div class="form-group">
                     <label for="packaging_link">梱包リンク</label>
                     <input type="url" id="packaging_link" name="packaging_link"
-                        value="<%= product.packaging_link || '' %>" placeholder="https://example.com/packaging">
+                        value="<%= product.packaging_link || '' %>" placeholder="例：https://example.com/packaging">
                 </div>
 
                 <div class="form-group">
                     <label for="manual_link">マニュアルリンク</label>
                     <input type="url" id="manual_link" name="manual_link" value="<%= product.manual_link || '' %>"
-                        placeholder="https://example.com/manual">
+                        placeholder="例：https://example.com/manual">
                 </div>
             </div>
 
@@ -306,6 +308,25 @@
     </script>
 
     <style>
+        .product-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .product-title {
+            color: white;
+            margin: 0;
+        }
+
+        .product-code {
+            display: block;
+            margin-top: 0.25rem;
+            color: #000000;
+        }
+
         /* Additional styles specific to edit form */
         .edit-form {
             background-color: var(--white);
@@ -450,4 +471,4 @@
         }
     </style>
 
-    <!-- <%- include('./layout/footer') %> -->
+    <%- include('./layout/footer') %>
