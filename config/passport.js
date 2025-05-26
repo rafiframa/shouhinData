@@ -50,7 +50,7 @@ passport.use(new GoogleStrategy({
     return done(null, user);
   } catch (error) {
     const email = profile?.emails?.[0]?.value || 'unknown';
-    console.error('❌ Error in Google Strategy:', {
+    console.error('❌ Error in Google Strateg:', {
       error: error.message,
       stack: error.stack,
       email: email,
