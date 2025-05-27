@@ -15,14 +15,14 @@
             <div class="form-section">
 
                 <div class="form-group">
-                    <label for="product_code">商品コード *</label>
-                    <input type="text" id="product_code" name="product_code" value="<%= product.product_code %>"
+                    <label for="product_name">商品名 *</label>
+                    <input type="text" id="product_name" name="product_name" value="<%= product.product_name %>"
                         required>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_name">商品名 *</label>
-                    <input type="text" id="product_name" name="product_name" value="<%= product.product_name %>"
+                    <label for="product_code">商品コード *</label>
+                    <input type="text" id="product_code" name="product_code" value="<%= product.product_code %>"
                         required>
                 </div>
 
@@ -31,10 +31,10 @@
                     <input type="number" id="list_price" name="list_price" value="<%= product.list_price %>" required>
                 </div>
 
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label for="image">商品画像URL</label>
                     <input type="url" id="image" name="image" value="<%= product.image || '' %>">
-                </div> -->
+                </div>
             </div>
 
             <!-- Three-column grid for detailed information -->
@@ -346,6 +346,9 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
         }
 
         .edit-form .info-section {
