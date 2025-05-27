@@ -157,7 +157,9 @@
         </div>
 
         <div class="product-meta">
-          <small class="last-updated">最終更新: <%= new Date(product.updated_at).toLocaleString('ja-JP') %></small>
+          <small class="last-updated">
+            最終更新: <%= new Date(product.updated_at).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }) %>
+          </small>
         </div>
 
         <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
