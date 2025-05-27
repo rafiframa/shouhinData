@@ -12,6 +12,8 @@ const { sequelize } = require('./models');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.set('trust proxy', 1);
+
 // Set view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -34,7 +36,8 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production', // HTTPS in production
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'lax'
   }
 }));
 
@@ -58,7 +61,7 @@ app.use('/', productRoutes);
 
 // Error handling middleware
 app.use((req, res) => {
-  res.status(404).render('404', { 
+  res.status(404).render('404', {
     title: 'Page Not Found',
     message: 'ページが見つかりません'
   });
@@ -70,7 +73,7 @@ async function startServer() {
     // Test database connection
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
-    
+
     // Start Express server
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
