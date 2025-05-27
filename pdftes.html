@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>製品保証書 PDF 生成</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-width: 180px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .preview {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #1565c0;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #e65100;
+        }
+
+        /* Hidden warranty template for PDF generation */
+        .warranty-template {
+            position: absolute;
+            left: -9999px;
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            padding: 20mm;
+            font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Sans', sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: black;
+        }
+
+        .warranty-template h1 {
+            text-align: center;
+            font-size: 24pt;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .warranty-template .section {
+            margin-bottom: 20px;
+        }
+
+        .warranty-template .section-title {
+            font-size: 16pt;
+            font-weight: bold;
+            border-bottom: 1px solid #666;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .warranty-template .field {
+            margin-bottom: 8px;
+            padding-left: 10px;
+        }
+
+        .warranty-template .terms {
+            font-size: 10pt;
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .warranty-template .issuer {
+            text-align: right;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 製品保証書 PDF 生成器</h1>
+        
+        <div class="info-box">
+            <strong>💡 日本語PDF生成について</strong><br>
+            HTML2Canvas + jsPDF を使用して日本語テキストを正しく表示するPDFを生成します。
+        </div>
+        
+        <form id="warrantyForm">
+            <div class="form-group">
+                <label for="productName">製品名:</label>
+                <input type="text" id="productName" value="デジタルカメラ XZ-1000" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="modelNumber">型番:</label>
+                <input type="text" id="modelNumber" value="XZ-1000-BK" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="serialNumber">シリアル番号:</label>
+                <input type="text" id="serialNumber" value="JP2024001234" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="customerName">お客様氏名:</label>
+                <input type="text" id="customerName" value="田中 太郎" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="customerAddress">ご住所:</label>
+                <textarea id="customerAddress" required>〒100-0001
+東京都千代田区千代田1-1-1
+千代田マンション101号室</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="phoneNumber">電話番号:</label>
+                <input type="tel" id="phoneNumber" value="03-1234-5678" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="purchaseDate">購入日:</label>
+                <input type="date" id="purchaseDate" value="2024-05-15" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="purchaseStore">購入店舗:</label>
+                <input type="text" id="purchaseStore" value="電器屋さん 新宿店" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="warrantyPeriod">保証期間:</label>
+                <select id="warrantyPeriod" required>
+                    <option value="1年">1年</option>
+                    <option value="2年">2年</option>
+                    <option value="3年" selected>3年</option>
+                    <option value="5年">5年</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="companyName">会社名:</label>
+                <input type="text" id="companyName" value="株式会社テクノロジー" required>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" onclick="generateJapanesePDF()">📄 PDF生成</button>
+                <button type="button" onclick="previewWarranty()">👁️ プレビュー表示</button>
+            </div>
+        </form>
+        
+        <div class="preview" id="previewArea">
+            <p>フォームに入力後、ボタンをクリックして製品保証書を作成してください。</p>
+        </div>
+    </div>
+
+    <!-- Hidden warranty template -->
+    <div class="warranty-template" id="warrantyTemplate">
+        <h1>製品保証書</h1>
+        
+        <div class="section">
+            <div class="section-title">製品情報</div>
+            <div class="field">製品名: <span id="template-productName"></span></div>
+            <div class="field">型番: <span id="template-modelNumber"></span></div>
+            <div class="field">シリアル番号: <span id="template-serialNumber"></span></div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">お客様情報</div>
+            <div class="field">お客様氏名: <span id="template-customerName"></span></div>
+            <div class="field">ご住所: <pre id="template-customerAddress" style="font-family: inherit; margin: 0; white-space: pre-wrap;"></pre></div>
+            <div class="field">電話番号: <span id="template-phoneNumber"></span></div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">保証情報</div>
+            <div class="field">購入日: <span id="template-purchaseDate"></span></div>
+            <div class="field">購入店舗: <span id="template-purchaseStore"></span></div>
+            <div class="field">保証期間: <span id="template-warrantyPeriod"></span></div>
+            <div class="field">保証終了日: <span id="template-warrantyEndDate"></span></div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">保証規定</div>
+            <div class="terms">
+                <div>1. 本保証書は、記載された期間内における無償修理をお約束するものです。</div>
+                <div>2. 保証期間内でも、お客様の故意・過失による故障は有償修理となります。</div>
+                <div>3. 本保証書は再発行いたしませんので、大切に保管してください。</div>
+                <div>4. 保証修理を受ける際は、必ず本保証書をご持参ください。</div>
+                <div>5. 本保証書は日本国内でのみ有効です。</div>
+            </div>
+        </div>
+        
+        <div class="issuer">
+            <div>発行者: <span id="template-companyName"></span></div>
+            <div>発行日: <span id="template-issueDate"></span></div>
+        </div>
+    </div>
+
+    <script>
+        function getFormData() {
+            return {
+                productName: document.getElementById('productName').value,
+                modelNumber: document.getElementById('modelNumber').value,
+                serialNumber: document.getElementById('serialNumber').value,
+                customerName: document.getElementById('customerName').value,
+                customerAddress: document.getElementById('customerAddress').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                purchaseDate: document.getElementById('purchaseDate').value,
+                purchaseStore: document.getElementById('purchaseStore').value,
+                warrantyPeriod: document.getElementById('warrantyPeriod').value,
+                companyName: document.getElementById('companyName').value
+            };
+        }
+        
+        function getFormattedDates(formData) {
+            const purchaseDate = new Date(formData.purchaseDate);
+            const formattedDate = `${purchaseDate.getFullYear()}年${purchaseDate.getMonth() + 1}月${purchaseDate.getDate()}日`;
+            
+            const warrantyYears = parseInt(formData.warrantyPeriod.replace('年', ''));
+            const endDate = new Date(purchaseDate);
+            endDate.setFullYear(endDate.getFullYear() + warrantyYears);
+            const formattedEndDate = `${endDate.getFullYear()}年${endDate.getMonth() + 1}月${endDate.getDate()}日`;
+            
+            return { formattedDate, formattedEndDate };
+        }
+
+        function updateTemplate() {
+            const formData = getFormData();
+            const { formattedDate, formattedEndDate } = getFormattedDates(formData);
+            
+            // Update template with form data
+            document.getElementById('template-productName').textContent = formData.productName;
+            document.getElementById('template-modelNumber').textContent = formData.modelNumber;
+            document.getElementById('template-serialNumber').textContent = formData.serialNumber;
+            document.getElementById('template-customerName').textContent = formData.customerName;
+            document.getElementById('template-customerAddress').textContent = formData.customerAddress;
+            document.getElementById('template-phoneNumber').textContent = formData.phoneNumber;
+            document.getElementById('template-purchaseDate').textContent = formattedDate;
+            document.getElementById('template-purchaseStore').textContent = formData.purchaseStore;
+            document.getElementById('template-warrantyPeriod').textContent = formData.warrantyPeriod;
+            document.getElementById('template-warrantyEndDate').textContent = formattedEndDate;
+            document.getElementById('template-companyName').textContent = formData.companyName;
+            
+            const today = new Date();
+            const todayFormatted = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
+            document.getElementById('template-issueDate').textContent = todayFormatted;
+        }
+
+        function previewWarranty() {
+            updateTemplate();
+            const template = document.getElementById('warrantyTemplate');
+            const preview = document.getElementById('previewArea');
+            
+            // Clone the template and show it in preview
+            const clone = template.cloneNode(true);
+            clone.style.position = 'static';
+            clone.style.left = 'auto';
+            clone.style.width = 'auto';
+            clone.style.minHeight = 'auto';
+            clone.style.border = '1px solid #ddd';
+            clone.style.borderRadius = '8px';
+            clone.style.padding = '20px';
+            clone.style.background = 'white';
+            
+            preview.innerHTML = '';
+            preview.appendChild(clone);
+        }
+        
+        async function generateJapanesePDF() {
+            try {
+                showMessage('PDF生成中...', 'info');
+                
+                updateTemplate();
+                const template = document.getElementById('warrantyTemplate');
+                
+                // Temporarily show the template for html2canvas
+                template.style.position = 'fixed';
+                template.style.left = '0';
+                template.style.top = '0';
+                template.style.zIndex = '-1000';
+                template.style.opacity = '1';
+                
+                // Generate canvas from HTML
+                const canvas = await html2canvas(template, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    width: template.offsetWidth,
+                    height: template.offsetHeight
+                });
+                
+                // Hide the template again
+                template.style.position = 'absolute';
+                template.style.left = '-9999px';
+                template.style.zIndex = 'auto';
+                template.style.opacity = '0';
+                
+                // Create PDF
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                
+                // Calculate dimensions for A4
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 297; // A4 height in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                const formData = getFormData();
+                const fileName = `製品保証書_${formData.serialNumber}.pdf`;
+                pdf.save(fileName);
+                
+                showMessage(`✅ PDF生成完了: ${fileName}`, 'success');
+                
+            } catch (error) {
+                console.error('PDF生成エラー:', error);
+                showMessage(`❌ PDF生成に失敗しました: ${error.message}`, 'error');
+            }
+        }
+        
+        function showMessage(message, type) {
+            const preview = document.getElementById('previewArea');
+            const messageClass = type === 'success' ? 'success-message' : 
+                                type === 'error' ? 'error-message' : 'info-box';
+            
+            preview.innerHTML = `<div class="${messageClass}">${message}</div>`;
+            
+            if (type === 'info') {
+                setTimeout(() => {
+                    preview.innerHTML = '<p>フォームに入力後、ボタンをクリックして製品保証書を作成してください。</p>';
+                }, 3000);
+            }
+        }
+
+        // Auto-preview when form changes
+        document.getElementById('warrantyForm').addEventListener('input', previewWarranty);
+        
+        // Initial preview
+        window.addEventListener('load', previewWarranty);
+    </script>
+</body>
+</html>
