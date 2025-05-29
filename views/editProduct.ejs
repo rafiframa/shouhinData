@@ -78,10 +78,22 @@
                         <label for="jan_code">JANコード</label>
                         <input type="text" id="jan_code" name="jan_code" value="<%= product.jan_code || '' %>">
                     </div>
+
+                    <div class="form-group">
+                        <label for="country_of_origin">原産国</label>
+                        <input type="text" id="country_of_origin" name="country_of_origin"
+                            value="<%= product.country_of_origin || '' %>">
+                    </div>
                 </div>
 
                 <div class="info-section">
                     <h3>仕入情報</h3>
+
+                    <div class="form-group">
+                        <label for="primary_supplier_name">主要仕入先名</label>
+                        <input type="text" id="primary_supplier_name" name="primary_supplier_name"
+                            value="<%= product.primary_supplier_name || '' %>">
+                    </div>
 
                     <div class="form-group">
                         <label for="supplier_product_code">仕入先商品コード</label>
@@ -91,7 +103,7 @@
 
                     <div class="currency-pair">
                         <div class="form-group">
-                            <label for="supplier_cost_local">仕入原価</label>
+                            <label for="supplier_cost_local">仕入原価（取引通貨・税抜）</label>
                             <input type="number" step="0.01" id="supplier_cost_local" name="supplier_cost_local"
                                 value="<%= product.supplier_cost_local || '' %>">
                         </div>
@@ -117,8 +129,8 @@
 
                     <div class="form-group">
                         <label for="dimensions_mm">寸法 (mm)</label>
-                        <input type="text" id="dimensions_mm" name="dimensions_mm"
-                            value="<%= product.dimensions_mm || '' %>" placeholder="例: 100x50x25">
+                        <input type="number" id="dimensions_mm" name="dimensions_mm"
+                            value="<%= product.dimensions_mm || '' %>">
                     </div>
 
                     <div class="form-group">
@@ -128,14 +140,26 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="capacity_or_volume">容量・体積</label>
+                        <input type="text" id="capacity_or_volume" name="capacity_or_volume"
+                            value="<%= product.capacity_or_volume || '' %>" placeholder="例：　800L,  12V60Ah">
+                    </div>
+
+                    <div class="form-group">
                         <label for="material">材質</label>
                         <input type="text" id="material" name="material" value="<%= product.material || '' %>">
                     </div>
 
                     <div class="form-group">
-                        <label for="durability_years">耐用年数</label>
+                        <label for="durability_years">耐用年数（法定耐用年数）</label>
                         <input type="number" id="durability_years" name="durability_years"
                             value="<%= product.durability_years || '' %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="accessories">付属品</label>
+                        <input type="text" id="accessories" name="accessories" value="<%= product.accessories || '' %>"
+                            placeholder="例：　ケーブル、釘、バッテリー、ネジ">
                     </div>
                 </div>
             </div>
@@ -147,7 +171,13 @@
                     <textarea id="other_specs" name="other_specs" rows="4"
                         placeholder="その他の仕様や特記事項"><%= product.other_specs || '' %></textarea>
                 </div>
+                <h3>仕様変更履歴</h3>
+                <div class="form-group">
+                    <textarea id="spec_change_history" name="spec_change_history" rows="4"
+                        placeholder="例：　2025年5月28日　カバーの色変更"><%= product.spec_change_history || '' %></textarea>
+                </div>
             </div>
+
 
             <!-- Resource Links -->
             <div class="info-section">
@@ -168,6 +198,12 @@
                 <div class="form-group">
                     <label for="manual_link">マニュアルリンク</label>
                     <input type="url" id="manual_link" name="manual_link" value="<%= product.manual_link || '' %>"
+                        placeholder="例：https://example.com/manual">
+                </div>
+
+                <div class="form-group">
+                    <label for="faq_url">FAQ</label>
+                    <input type="url" id="faq_url" name="faq_url" value="<%= product.faq_url || '' %>"
                         placeholder="例：https://example.com/manual">
                 </div>
             </div>

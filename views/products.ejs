@@ -113,7 +113,7 @@
                                             <th>商品名</th>
                                             <th>商品カテゴリー</th>
                                             <th>販売状況</th>
-                                            <th>価格</th>
+                                            <th>定価</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -275,7 +275,7 @@
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <label for="list_price">販売価格 *</label>
+                                                            <label for="list_price">定価*</label>
                                                             <input type="number" id="list_price" name="list_price"
                                                                 required>
                                                         </div>
@@ -336,7 +336,7 @@
 
                                                             <div class="currency-pair">
                                                                 <div class="form-group">
-                                                                    <label for="supplier_cost_local">仕入原価</label>
+                                                                    <label for="supplier_cost_local">仕入原価（取引通貨・税抜）</label>
                                                                     <input type="number" step="0.01"
                                                                         id="supplier_cost_local"
                                                                         name="supplier_cost_local">
@@ -361,7 +361,7 @@
 
                                                             <div class="form-group">
                                                                 <label for="dimensions_mm">寸法 (mm)</label>
-                                                                <input type="text" id="dimensions_mm"
+                                                                <input type="number" id="dimensions_mm"
                                                                     name="dimensions_mm" placeholder="例: 100x50x25">
                                                             </div>
 
@@ -377,7 +377,7 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label for="durability_years">耐用年数</label>
+                                                                <label for="durability_years">耐用年数（法定耐用年数）</label>
                                                                 <input type="number" id="durability_years"
                                                                     name="durability_years">
                                                             </div>

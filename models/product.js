@@ -86,6 +86,33 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true
     },
+
+    // 👉 Newly added fields
+    primary_supplier_name: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    capacity_or_volume: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    accessories: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    country_of_origin: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    spec_change_history: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    faq_url: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
