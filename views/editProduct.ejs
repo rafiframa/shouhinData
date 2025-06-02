@@ -52,14 +52,16 @@
                         <label for="product_type">商品カテゴリー</label>
                         <select id="product_type" name="product_type">
                             <option value="">選択してください</option>
-                            <option value="パワーボックス" <%=product.product_type==='パワーボックス' ? 'selected' : '' %>>パワーボックス
+                            <option value="WAM" <%=product.product_type==='WAM' ? 'selected' : '' %>>WAM
                             </option>
-                            <option value="ファームゲート" <%=product.product_type==='ファームゲート' ? 'selected' : '' %>>ファームゲート
+                            <option value="フェンス" <%=product.product_type==='フェンス' ? 'selected' : '' %>>フェンス
                             </option>
-                            <option value="ワイヤー" <%=product.product_type==='ワイヤー' ? 'selected' : '' %>>ワイヤー</option>
-                            <option value="捕育関連" <%=product.product_type==='捕育関連' ? 'selected' : '' %>>捕育関連
+                            <option value="飼料" <%=product.product_type==='飼料' ? 'selected' : '' %>>飼料</option>
+                            <option value="畜産" <%=product.product_type==='畜産' ? 'selected' : '' %>>畜産
                             </option>
-                            <option value="その他" <%=product.product_type==='その他' ? 'selected' : '' %>>その他</option>
+                            <option value="電気柵" <%=product.product_type==='電気柵' ? 'selected' : '' %>>電気柵
+                            </option>
+                            <option value="" <%=product.product_type==='' ? 'selected' : '' %>>その他</option>
                         </select>
                     </div>
 
