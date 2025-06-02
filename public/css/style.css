@@ -696,7 +696,7 @@ body.modal-open {
 .pagination-number.active {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: var(--white);
-  /* border-color: var(--primary-color); */
+  border-color: var(--primary-color);
   box-shadow: 0 4px 12px rgba(94, 112, 84, 0.4);
   position: relative;
 }
@@ -704,10 +704,10 @@ body.modal-open {
 .pagination-number.active::before {
   content: '';
   position: absolute;
-  /* top: -3px;
+  top: -3px;
   left: -3px;
   right: -3px;
-  bottom: -3px; */
+  bottom: -3px;
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   border-radius: 10px;
   z-index: -1;
