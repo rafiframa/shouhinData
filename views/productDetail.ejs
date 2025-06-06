@@ -75,16 +75,19 @@
               </span>
             </div>
 
-            <div class="info-item">
-              <span class="info-label">仕入原価（取引通貨・税抜）</span>
-              <span class="info-value">
-                <% if (product.supplier_cost_local && product.supplier_cost_currency) { %>
-                  <%= +product.supplier_cost_local.toLocaleString() %>
-                    <%= product.supplier_cost_currency %>
-                      <% } else { %>
-                        （なし）
-                        <% } %>
-              </span>
+            <div class="currency-pair">
+              <div class="info-item">
+                <span class="info-label">仕入原価（税抜）</span>
+                <span class="info-value">
+                  <%= product.supplier_cost_local || '（なし）' %>
+                </span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">通貨</span>
+                <span class="info-value">
+                  <%= product.supplier_cost_currency || '（なし）' %>
+                </span>
+              </div>
             </div>
           </div>
 
@@ -404,6 +407,20 @@
     .spec-history {
       white-space: pre-line;
       line-height: 1.5;
+    }
+
+    .currency-pair {
+      display: flex;
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .currency-pair .info-item:first-child {
+      flex: 2;
+    }
+
+    .currency-pair .info-item:last-child {
+      flex: 1;
     }
   </style>
 

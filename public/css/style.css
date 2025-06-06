@@ -415,11 +415,6 @@ tbody tr:active {
   font-size: 1.2rem;
 }
 
-.currency-pair .form-group:last-child label {
-  font-size: 1rem;
-  color: var(--text-color);
-}
-
 .input-group {
   display: flex;
   align-items: center;

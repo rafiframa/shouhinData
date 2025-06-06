@@ -109,13 +109,53 @@
                 <% } %>
                             <div class="product-list">
                                 <table id="product-table">
-                                    <thead>
+                                   <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>商品名</th>
-                                            <th>商品カテゴリー</th>
-                                            <th>販売状況</th>
-                                            <th>標準価格（税抜）</th>
+                                            <th>
+                                                <a href="?<%= new URLSearchParams({...searchParams, sort: 'id', order: searchParams.sort === 'id' && searchParams.order === 'asc' ? 'desc' : 'asc'}).toString() %>" 
+                                                class="sortable-header <%= searchParams.sort === 'id' ? 'active' : '' %>">
+                                                    ID
+                                                    <% if (searchParams.sort === 'id') { %>
+                                                        <span class="sort-icon"><%= searchParams.order === 'asc' ? '▲' : '▼' %></span>
+                                                    <% } %>
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a href="?<%= new URLSearchParams({...searchParams, sort: 'product_name', order: searchParams.sort === 'product_name' && searchParams.order === 'asc' ? 'desc' : 'asc'}).toString() %>" 
+                                                class="sortable-header <%= searchParams.sort === 'product_name' ? 'active' : '' %>">
+                                                    商品名
+                                                    <% if (searchParams.sort === 'product_name') { %>
+                                                        <span class="sort-icon"><%= searchParams.order === 'asc' ? '▲' : '▼' %></span>
+                                                    <% } %>
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a href="?<%= new URLSearchParams({...searchParams, sort: 'product_type', order: searchParams.sort === 'product_type' && searchParams.order === 'asc' ? 'desc' : 'asc'}).toString() %>" 
+                                                class="sortable-header <%= searchParams.sort === 'product_type' ? 'active' : '' %>">
+                                                    商品カテゴリー
+                                                    <% if (searchParams.sort === 'product_type') { %>
+                                                        <span class="sort-icon"><%= searchParams.order === 'asc' ? '▲' : '▼' %></span>
+                                                    <% } %>
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a href="?<%= new URLSearchParams({...searchParams, sort: 'sales_status', order: searchParams.sort === 'sales_status' && searchParams.order === 'asc' ? 'desc' : 'asc'}).toString() %>" 
+                                                class="sortable-header <%= searchParams.sort === 'sales_status' ? 'active' : '' %>">
+                                                    販売状況
+                                                    <% if (searchParams.sort === 'sales_status') { %>
+                                                        <span class="sort-icon"><%= searchParams.order === 'asc' ? '▲' : '▼' %></span>
+                                                    <% } %>
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a href="?<%= new URLSearchParams({...searchParams, sort: 'list_price', order: searchParams.sort === 'list_price' && searchParams.order === 'asc' ? 'desc' : 'asc'}).toString() %>" 
+                                                class="sortable-header <%= searchParams.sort === 'list_price' ? 'active' : '' %>">
+                                                    標準価格（税抜）
+                                                    <% if (searchParams.sort === 'list_price') { %>
+                                                        <span class="sort-icon"><%= searchParams.order === 'asc' ? '▲' : '▼' %></span>
+                                                    <% } %>
+                                                </a>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1073,6 +1113,47 @@
                                         #no-results-row td {
                                             background: linear-gradient(135deg, #f8f9fa 0%, var(--primary-light) 100%);
                                             border-radius: 8px;
+                                        }
+
+                                        /* Sortable header styles --------------------------------------------------------------------------------------*/
+                                        .sortable-header {
+                                            color: var(--white);
+                                            padding: 1.25rem 1rem;
+                                            text-decoration: none;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: space-between;
+                                            transition: all 0.2s ease;
+                                        }
+
+                                        .sortable-header:hover {
+                                            color: var(--primary-light);
+                                        }
+
+                                        .sortable-header.active {
+                                            color: var(--white);
+                                            font-weight: 700;
+                                        }
+
+                                        .sort-icon {
+                                            margin-left: 0.5rem;
+                                            font-size: 0.8rem;
+                                            opacity: 0.8;
+                                        }
+
+                                        #product-table th {
+                                            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+                                            color: var(--white);
+                                            padding: 0;
+                                            text-align: left;
+                                            font-weight: 600;
+                                            font-size: 0.95rem;
+                                            border-bottom: 2px solid var(--primary-dark);
+                                            position: relative;
+                                        }
+
+                                        #product-table th:hover {
+                                            background: linear-gradient(135deg, var(--primary-dark) 0%, #155a4d 100%);
                                         }
 
                                         /* ------------------------------------------------------------------------------------------------------------------ */

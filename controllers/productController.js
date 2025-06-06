@@ -5,7 +5,14 @@ const { Op } = require('sequelize');
 exports.getAllProducts = async (req, res) => {
   try {
     // Extract search parameters from query
-    const { search, product_type, sales_status, page } = req.query;
+    const { search, product_type, sales_status, page, sort, order } = req.query;
+
+    // Sorting parameters
+    const sortField = sort || 'created_at';
+    const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
+    // Validate sort field to prevent SQL injection
+    const allowedSortFields = ['id', 'product_name', 'product_type', 'sales_status', 'list_price', 'created_at'];
+    const validSortField = allowedSortFields.includes(sortField) ? sortField : 'created_at';
 
     // Pagination settings
     const itemsPerPage = 25;
@@ -37,7 +44,7 @@ exports.getAllProducts = async (req, res) => {
     // Fetch products with filtering and pagination
     const { count, rows: products } = await Product.findAndCountAll({
       where: whereConditions,
-      order: [['created_at', 'DESC']], // Show newest first
+      order: [[validSortField, sortOrder]], // Show newest first
       limit: itemsPerPage,
       offset: offset
     });
@@ -79,7 +86,9 @@ exports.getAllProducts = async (req, res) => {
       searchParams: {
         search: search || '',
         product_type: product_type || '',
-        sales_status: sales_status || ''
+        sales_status: sales_status || '',
+        sort: sort || '',
+        order: order || ''
       },
       pagination: {
         currentPage,
