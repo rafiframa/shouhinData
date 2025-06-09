@@ -10,6 +10,10 @@ router.get('/', requireAuth, productController.getAllProducts);
 // Public route for product detail (requires login)
 router.get('/product/:slug', requireAuth, productController.getProductDetail);
 
+// Quality certification routes
+router.get('/product/:slug/certification', requireAuth, productController.getCertification);
+router.post('/product/:slug/certification', requireAuth, productController.generateCertification);
+
 // Admin only routes
 router.get('/product/:slug/edit', requireAdmin, productController.getEditProduct);
 router.post('/api/products', requireAdmin, productController.createProduct);

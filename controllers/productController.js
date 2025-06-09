@@ -306,3 +306,105 @@ exports.deleteProduct = async (req, res) => {
     });
   }
 };
+
+
+exports.getCertification = async (req, res) => {
+  try {
+    const slug = req.params.slug;
+    const product = await Product.findOne({ where: { id: slug } });
+
+    if (!product) {
+      return res.status(404).render('404', {
+        title: 'Product Not Found',
+        message: '商品が見つかりません',
+        user: req.user
+      });
+    }
+
+    res.render('certification', {
+      title: `品質証明書 - ${product.product_name}`,
+      product,
+      user: req.user
+    });
+  } catch (error) {
+    console.error('Error fetching product for certification:', error);
+    res.status(500).render('error', {
+      title: 'Error',
+      message: 'データベースエラーが発生しました。'
+    });
+  }
+};
+
+exports.generateCertification = async (req, res) => {
+  try {
+    const slug = req.params.slug;
+    const { customerName, certificationDate, selectedFields } = req.body;
+
+    console.log(customerName)
+    console.log(certificationDate)
+    console.log(selectedFields)
+    console.log(slug)
+
+    const product = await Product.findOne({ where: { id: slug } });
+
+    if (!product) {
+      return res.status(404).render('404', {
+        title: 'Product Not Found',
+        message: '商品が見つかりません',
+        user: req.user
+      });
+    }
+
+    // Ensure selectedFields is an array
+    const fieldsArray = Array.isArray(selectedFields) ? selectedFields : [selectedFields].filter(Boolean);
+
+    // Always include product_name
+    if (!fieldsArray.includes('product_name')) {
+      fieldsArray.push('product_name');
+    }
+
+    // Format the date to Japanese format
+    const formattedDate = formatToJapaneseDate(certificationDate);
+
+    res.render('certificationDocument', {
+      title: `品質証明書 - ${product.product_name}`,
+      product,
+      customerName,
+      certificationDate,
+      formattedDate,
+      selectedFields: fieldsArray
+    });
+  } catch (error) {
+    console.error('Error generating certification:', error);
+    res.status(500).render('error', {
+      title: 'Error',
+      message: 'データベースエラーが発生しました。'
+    });
+  }
+
+  // Function to convert date to Japanese era format
+  function formatToJapaneseDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    // Convert to Reiwa era (Reiwa started May 1, 2019)
+    let era = '';
+    let eraYear = 0;
+
+    if (year >= 2019) {
+      era = '令和';
+      eraYear = year - 2018; // Reiwa 1 = 2019
+    } else if (year >= 1989) {
+      era = '平成';
+      eraYear = year - 1988; // Heisei 1 = 1989
+    } else {
+      era = '昭和';
+      eraYear = year - 1925; // Showa 1 = 1926
+    }
+
+    return `${era}${eraYear}年　${month}月　${day}日`;
+  }
+
+};

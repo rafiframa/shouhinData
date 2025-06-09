@@ -215,7 +215,8 @@
           </small>
         </div>
 
-        <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+        <div
+          style="margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <a href="/" class="btn cancel-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
@@ -224,8 +225,24 @@
             </svg>
             商品一覧に戻る
           </a>
-          <% if (user && user.role==='admin' ) { %>
-            <div style="display: flex; gap: 1rem;">
+
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <!-- Quality Certification Button - Available to all authenticated users -->
+            <a href="/product/<%= product.id %>/certification" class="btn"
+              style="background-color: --primary-color; color: white;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px; vertical-align: text-bottom;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              品質証明書作成
+            </a>
+
+            <!-- Admin only buttons -->
+            <% if (user && user.role==='admin' ) { %>
               <a href="/product/<%= product.id %>/edit" class="btn" style="background-color: var(--warn);">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round"
@@ -245,183 +262,182 @@
                 </svg>
                 商品を削除
               </button>
+              <% } %>
+          </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteConfirmModal" class="modal">
+          <div class="modal-content delete-modal">
+            <div class="modal-header">
+              <h2>商品削除の確認</h2>
+              <span class="close-modal">&times;</span>
             </div>
-            <% } %>
+            <div class="modal-body">
+              <p class="confirm-message">「<strong>
+                  <%= product.product_name %>
+                </strong>」を削除してもよろしいですか？</p>
+              <p class="warning-message">この操作は元に戻すことができません。</p>
+
+              <div class="form-actions">
+                <button type="button" class="btn cancel-btn" id="cancelDeleteBtn">キャンセル</button>
+                <button type="button" class="btn btn-danger confirm-delete-btn" id="confirmDeleteBtn"
+                  data-product-id="<%= product.id %>">削除する</button>
+              </div>
+            </div>
+          </div>
         </div>
-  </div>
 
-  <!-- Delete Confirmation Modal -->
-  <div id="deleteConfirmModal" class="modal">
-    <div class="modal-content delete-modal">
-      <div class="modal-header">
-        <h2>商品削除の確認</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <p class="confirm-message">「<strong>
-            <%= product.product_name %>
-          </strong>」を削除してもよろしいですか？</p>
-        <p class="warning-message">この操作は元に戻すことができません。</p>
+        <script>
+          // Delete Modal functionality
+          const deleteModal = document.getElementById('deleteConfirmModal');
+          const deleteProductBtn = document.getElementById('deleteProductBtn');
+          const closeDeleteModal = document.querySelector('#deleteConfirmModal .close-modal');
+          const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+          const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 
-        <div class="form-actions">
-          <button type="button" class="btn cancel-btn" id="cancelDeleteBtn">キャンセル</button>
-          <button type="button" class="btn btn-danger confirm-delete-btn" id="confirmDeleteBtn"
-            data-product-id="<%= product.id %>">削除する</button>
-        </div>
-      </div>
-    </div>
-  </div>
+          // Open delete modal
+          deleteProductBtn.addEventListener('click', () => {
+            deleteModal.style.display = 'block';
+            document.body.classList.add('modal-open');
+          });
 
-  <script>
-    // Delete Modal functionality
-    const deleteModal = document.getElementById('deleteConfirmModal');
-    const deleteProductBtn = document.getElementById('deleteProductBtn');
-    const closeDeleteModal = document.querySelector('#deleteConfirmModal .close-modal');
-    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-
-    // Open delete modal
-    deleteProductBtn.addEventListener('click', () => {
-      deleteModal.style.display = 'block';
-      document.body.classList.add('modal-open');
-    });
-
-    // Close delete modal functions
-    function closeDeleteModalFunction() {
-      deleteModal.style.display = 'none';
-      document.body.classList.remove('modal-open');
-    }
-
-    closeDeleteModal.addEventListener('click', closeDeleteModalFunction);
-    cancelDeleteBtn.addEventListener('click', closeDeleteModalFunction);
-
-    // Close if clicking outside modal content
-    window.addEventListener('click', (event) => {
-      if (event.target === deleteModal) {
-        closeDeleteModalFunction();
-      }
-    });
-
-    // Handle delete confirmation
-    confirmDeleteBtn.addEventListener('click', async () => {
-      const id = confirmDeleteBtn.getAttribute('data-product-id');
-
-      try {
-        const response = await fetch(`/api/products/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
+          // Close delete modal functions
+          function closeDeleteModalFunction() {
+            deleteModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
           }
-        });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || '商品の削除に失敗しました');
-        }
+          closeDeleteModal.addEventListener('click', closeDeleteModalFunction);
+          cancelDeleteBtn.addEventListener('click', closeDeleteModalFunction);
 
-        // Redirect to products page
-        window.location.href = '/?deleted=' + encodeURIComponent('<%= product.product_code %>');
+          // Close if clicking outside modal content
+          window.addEventListener('click', (event) => {
+            if (event.target === deleteModal) {
+              closeDeleteModalFunction();
+            }
+          });
 
-      } catch (error) {
-        console.error('Error deleting product:', error);
-        showNotification(error.message || '商品の削除に失敗しました', 'error');
-        closeDeleteModalFunction();
-      }
-    });
+          // Handle delete confirmation
+          confirmDeleteBtn.addEventListener('click', async () => {
+            const id = confirmDeleteBtn.getAttribute('data-product-id');
 
-    // Notification function
-    function showNotification(message, type) {
-      const notification = document.createElement('div');
-      notification.className = `notification ${type}`;
-      notification.textContent = message;
+            try {
+              const response = await fetch(`/api/products/${id}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              });
 
-      document.body.appendChild(notification);
+              if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || '商品の削除に失敗しました');
+              }
 
-      // Show notification
-      setTimeout(() => {
-        notification.classList.add('show');
-      }, 10);
+              // Redirect to products page
+              window.location.href = '/?deleted=' + encodeURIComponent('<%= product.product_code %>');
 
-      // Remove notification after 5 seconds
-      setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 300);
-      }, 5000);
-    }
-  </script>
+            } catch (error) {
+              console.error('Error deleting product:', error);
+              showNotification(error.message || '商品の削除に失敗しました', 'error');
+              closeDeleteModalFunction();
+            }
+          });
 
-  <style>
-    .product-header {
-      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 1rem 1.5rem;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
+          // Notification function
+          function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
 
-    .product-title {
-      color: white;
-      margin: 0;
-    }
+            document.body.appendChild(notification);
 
-    .product-price {
-      margin-left: 1rem;
-      font-weight: normal;
-      color: #d4f5e4;
-    }
+            // Show notification
+            setTimeout(() => {
+              notification.classList.add('show');
+            }, 10);
 
-    .product-code {
-      display: block;
-      margin-top: 0.25rem;
-      color: #000000;
-    }
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+              notification.classList.remove('show');
+              setTimeout(() => {
+                document.body.removeChild(notification);
+              }, 300);
+            }, 5000);
+          }
+        </script>
 
-    .product-detail {
-      border-radius: 8px;
-      overflow: hidden;
-    }
+        <style>
+          .product-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+          }
 
-    .product-image {
-      width: 100%;
-      max-width: 500px;
-      margin: 1.5rem auto;
-      background: #f8f9fa;
-      /* border: 1px solid #e9ecef; */
-      border-radius: 8px;
-      overflow: hidden;
-      /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
-    }
+          .product-title {
+            color: white;
+            margin: 0;
+          }
 
-    .product-img {
-      width: 100%;
-      height: auto;
-      max-height: 250px;
-      object-fit: contain;
-      object-position: center;
-      background: white;
-      display: block;
-    }
+          .product-price {
+            margin-left: 1rem;
+            font-weight: normal;
+            color: #d4f5e4;
+          }
 
-    .spec-history {
-      white-space: pre-line;
-      line-height: 1.5;
-    }
+          .product-code {
+            display: block;
+            margin-top: 0.25rem;
+            color: #000000;
+          }
 
-    .currency-pair {
-      display: flex;
-      gap: 1rem;
-      align-items: end;
-    }
+          .product-detail {
+            border-radius: 8px;
+            overflow: hidden;
+          }
 
-    .currency-pair .info-item:first-child {
-      flex: 2;
-    }
+          .product-image {
+            width: 100%;
+            max-width: 500px;
+            margin: 1.5rem auto;
+            background: #f8f9fa;
+            /* border: 1px solid #e9ecef; */
+            border-radius: 8px;
+            overflow: hidden;
+            /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+          }
 
-    .currency-pair .info-item:last-child {
-      flex: 1;
-    }
-  </style>
+          .product-img {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: contain;
+            object-position: center;
+            background: white;
+            display: block;
+          }
 
-  <%- include('./layout/footer') %>
+          .spec-history {
+            white-space: pre-line;
+            line-height: 1.5;
+          }
+
+          .currency-pair {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+          }
+
+          .currency-pair .info-item:first-child {
+            flex: 2;
+          }
+
+          .currency-pair .info-item:last-child {
+            flex: 1;
+          }
+        </style>
+
+        <%- include('./layout/footer') %>

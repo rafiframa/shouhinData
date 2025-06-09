@@ -1,0 +1,460 @@
+<!-- views/certificationDocument.ejs -->
+<%- include('./layout/header') %>
+
+    <!-- Include html2canvas and jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <div class="certificate-container">
+        <div class="certificate-margin-wrapper" id="certificate-with-margins">
+
+            <div class="certificate" id="certificate">
+                <div class="date-section">
+                    <%= formattedDate %>
+                </div>
+
+                <div class="customer-section">
+                    <div class="customer-name">
+                        <%= customerName %> 御中
+                    </div>
+                </div>
+
+                <div class="company-info">
+                    <div class="company-content">
+                        <img src="/images/Stamp.png" alt="Company Stamp" class="company-stamp">
+                        <div class="company-details">
+                            ファームエイジ株式会社<br>
+                            代表取締役 小谷 栄二<br>
+                            北海道石狩郡当別町宇金沢 100 番地8
+                        </div>
+                    </div>
+                </div>
+
+                <div class="certificate-title">
+                    <h1>品 質 証 明 書</h1>
+                </div>
+
+                <div class="product-section">
+                    <div class="info-row">
+                        <span class="label">品名</span>
+                        <span class="colon">：</span>
+                        <span class="value">
+                            <%= product.product_name %>
+                        </span>
+                    </div>
+
+                    <% if (selectedFields.includes('dimensions_mm') && product.dimensions_mm) { %>
+                        <div class="info-row">
+                            <span class="label">規格</span>
+                            <span class="colon">：</span>
+                            <span class="value">
+                                直径 <%= product.dimensions_mm %>mm
+                            </span>
+                        </div>
+                        <% } %>
+
+                            <% if (selectedFields.includes('weight_g') && product.weight_g) { %>
+                                <div class="info-row">
+                                    <span class="label">重量</span>
+                                    <span class="colon">：</span>
+                                    <span class="value">
+                                        <%= product.weight_g %>g
+                                    </span>
+                                </div>
+                                <% } %>
+
+                                    <% if (selectedFields.includes('material') && product.material) { %>
+                                        <div class="info-row">
+                                            <span class="label">材質</span>
+                                            <span class="colon">：</span>
+                                            <span class="value">
+                                                <%= product.material %>
+                                            </span>
+                                        </div>
+                                        <% } %>
+
+                                            <% if (selectedFields.includes('capacity_or_volume') &&
+                                                product.capacity_or_volume) { %>
+                                                <div class="info-row">
+                                                    <span class="label">容量</span>
+                                                    <span class="colon">：</span>
+                                                    <span class="value">
+                                                        <%= product.capacity_or_volume %>
+                                                    </span>
+                                                </div>
+                                                <% } %>
+
+                                                    <!-- Additional selected fields -->
+                                                    <% if (selectedFields.includes('product_type') &&
+                                                        product.product_type) { %>
+                                                        <div class="info-row">
+                                                            <span class="label">種類</span>
+                                                            <span class="colon">：</span>
+                                                            <span class="value">
+                                                                <%= product.product_type %>
+                                                            </span>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <% if (selectedFields.includes('country_of_origin') &&
+                                                                product.country_of_origin) { %>
+                                                                <div class="info-row">
+                                                                    <span class="label">原産国</span>
+                                                                    <span class="colon">：</span>
+                                                                    <span class="value">
+                                                                        <%= product.country_of_origin %>
+                                                                    </span>
+                                                                </div>
+                                                                <% } %>
+
+                                                                    <% if (selectedFields.includes('jan_code') &&
+                                                                        product.jan_code) { %>
+                                                                        <div class="info-row">
+                                                                            <span class="label">JANコード</span>
+                                                                            <span class="colon">：</span>
+                                                                            <span class="value">
+                                                                                <%= product.jan_code %>
+                                                                            </span>
+                                                                        </div>
+                                                                        <% } %>
+
+                                                                            <% if
+                                                                                (selectedFields.includes('durability_years')
+                                                                                && product.durability_years) { %>
+                                                                                <div class="info-row">
+                                                                                    <span class="label">耐用年数</span>
+                                                                                    <span class="colon">：</span>
+                                                                                    <span class="value">
+                                                                                        <%= product.durability_years %>年
+                                                                                    </span>
+                                                                                </div>
+                                                                                <% } %>
+
+                                                                                    <% if
+                                                                                        (selectedFields.includes('accessories')
+                                                                                        && product.accessories) { %>
+                                                                                        <div class="info-row">
+                                                                                            <span
+                                                                                                class="label">付属品</span>
+                                                                                            <span class="colon">：</span>
+                                                                                            <span class="value">
+                                                                                                <%= product.accessories
+                                                                                                    %>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <% } %>
+
+                                                                                            <% if
+                                                                                                (selectedFields.includes('other_specs')
+                                                                                                && product.other_specs)
+                                                                                                { %>
+                                                                                                <div class="info-row">
+                                                                                                    <span
+                                                                                                        class="label">その他</span>
+                                                                                                    <span
+                                                                                                        class="colon">：</span>
+                                                                                                    <span class="value">
+                                                                                                        <%= product.other_specs
+                                                                                                            %>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <% } %>
+                </div>
+
+                <!-- Certification Statement -->
+                <div class="certification-statement">
+                    上記の通り証明致します。
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="certificate-actions">
+            <button onclick="downloadPDF()" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                PDFダウンロード
+            </button>
+
+            <a href="/product/<%= product.id %>/certification" class="btn cancel-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                項目を変更
+            </a>
+        </div>
+    </div>
+
+    <style>
+        .certificate-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        /* New margin wrapper - provides 3cm margins on all sides */
+        .certificate-margin-wrapper {
+            background: white;
+            padding: 2cm 1cm;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate {
+            background: white;
+            padding: 3rem;
+            font-family: 'ＭＳ 明朝', 'MS Mincho', 'Hiragino Mincho Pro', serif;
+            line-height: 1.8;
+            position: relative;
+            min-height: 800px;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .customer-section {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .customer-name {
+            font-size: 10.5pt;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .date-section {
+            font-size: 10.5pt;
+            text-align: right;
+        }
+
+        .company-info {
+            text-align: right;
+            margin-bottom: 2rem;
+        }
+
+        .company-content {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .company-stamp {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .company-details {
+            font-size: 10.5pt;
+            line-height: 1.8;
+            text-align: right;
+        }
+
+        .certificate-title {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .certificate-title h1 {
+            font-size: 22pt;
+            margin: 0;
+            letter-spacing: 8px;
+            font-family: 'ＭＳ 明朝', 'MS Mincho', 'Hiragino Mincho Pro', serif;
+        }
+
+        .product-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            /* justify-content: center; */
+            font-size: 14px;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 2rem;
+            align-items: baseline;
+        }
+
+        .label {
+            min-width: 200px;
+            font-weight: normal;
+            flex-shrink: 0;
+            letter-spacing: 16pt;
+        }
+
+        .colon {
+            margin: 0 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .value {
+            flex: 1;
+            word-wrap: break-word;
+        }
+
+        .certification-statement {
+            text-align: right;
+            margin-top: auto;
+            font-size: 10.5pt;
+            padding-right: 2rem;
+        }
+
+        .certificate-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background-color: #545b62;
+        }
+
+
+        @media (max-width: 768px) {
+            .certificate-margin-wrapper {
+                padding: 1cm;
+                /* Smaller margins on mobile */
+            }
+
+            .certificate {
+                padding: 1.5rem;
+                font-size: 12px;
+            }
+
+            .certificate-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .company-info {
+                text-align: left;
+            }
+
+            .certificate-title h1 {
+                font-size: 20px;
+                letter-spacing: 4px;
+            }
+
+            .certificate-actions {
+                flex-direction: column;
+            }
+
+            .label {
+                min-width: 60px;
+            }
+        }
+    </style>
+
+    <script>
+        async function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            // Now capture the wrapper that includes the margins
+            const certificateWithMargins = document.getElementById('certificate-with-margins');
+
+            // Show loading state
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span>生成中...</span>';
+            button.disabled = true;
+
+            try {
+                // Capture the certificate with margins as canvas
+                const canvas = await html2canvas(certificateWithMargins, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    width: certificateWithMargins.offsetWidth,
+                    height: certificateWithMargins.offsetHeight
+                });
+
+                // Create PDF
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // Calculate dimensions to fit A4
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = pageWidth
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                // Add image to PDF (centered)
+                const imgData = canvas.toDataURL('image/png');
+                const xPos = (pageWidth - imgWidth) / 2;
+                const yPos = 10; // Small top margin
+
+                pdf.addImage(imgData, 'PNG', xPos, yPos, imgWidth, imgHeight);
+
+                // Generate filename
+                const productName = '<%= product.product_name %>';
+                const customerName = '<%= customerName %>';
+                const date = new Date().toISOString().split('T')[0];
+                const filename = `品質証明書_${productName}_${customerName}_${date}.pdf`;
+
+                // Download PDF
+                pdf.save(filename);
+
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('PDFの生成に失敗しました。もう一度お試しください。');
+            } finally {
+                // Restore button
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+    </script>
+
+    <%- include('./layout/footer') %>
