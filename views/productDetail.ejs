@@ -56,6 +56,13 @@
                 <%= product.country_of_origin || '（なし）' %>
               </span>
             </div>
+
+            <div class="info-item">
+              <span class="info-label">PLかPB</span>
+              <span class="info-value">
+                <%= product.pl_pb || '（なし）' %>
+              </span>
+            </div>
           </div>
 
           <div class="info-section">
@@ -65,6 +72,13 @@
               <span class="info-label">主要仕入先名</span>
               <span class="info-value">
                 <%= product.primary_supplier_name || '（なし）' %>
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">仕入先商品名</span>
+              <span class="info-value">
+                <%= product.supplier_product_name || '（なし）' %>
               </span>
             </div>
 
@@ -135,6 +149,13 @@
                 <%= product.accessories || '（なし）' %>
               </span>
             </div>
+
+            <div class="info-item">
+              <span class="info-label">廃棄方法</span>
+              <span class="info-value">
+                <%= product.disposal_method || '（なし）' %>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -143,6 +164,15 @@
           <div class="info-item">
             <span class="info-value">
               <%= product.other_specs || '（なし）' %>
+            </span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h3>おすすめポイント・セールスピッチ</h3>
+          <div class="info-item">
+            <span class="info-value">
+              <%= product.sales_pitch || '（なし）' %>
             </span>
           </div>
         </div>
@@ -196,17 +226,28 @@
                     </a>
                     <% } %>
 
-                      <% if (product.faq_url) { %>
-                        <a href="<%= product.faq_url %>" target="_blank" class="resource-link">
+                      <% if (product.usage_example_url) { %>
+                        <a href="<%= product.usage_example_url %>" target="_blank" class="resource-link">
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                           </svg>
-                          FAQ
+                          使用例
                         </a>
                         <% } %>
+
+                          <% if (product.faq_url) { %>
+                            <a href="<%= product.faq_url %>" target="_blank" class="resource-link">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                              </svg>
+                              FAQ
+                            </a>
+                            <% } %>
         </div>
 
         <div class="product-meta">

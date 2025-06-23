@@ -86,6 +86,15 @@
                         <input type="text" id="country_of_origin" name="country_of_origin"
                             value="<%= product.country_of_origin || '' %>">
                     </div>
+
+                    <div class="form-group">
+                        <label for="pl_pb">PLかPB</label>
+                        <select id="pl_pb" name="pl_pb">
+                            <option value="">選択してください</option>
+                            <option value="プライベートラベル" <%=product.pl_pb==='プライベートラベル' ? 'selected' : '' %>>プライベートラベル</option>
+                            <option value="プライベートブランド" <%=product.pl_pb==='プライベートブランド' ? 'selected' : '' %>>プライベートブランド</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="info-section">
@@ -95,6 +104,12 @@
                         <label for="primary_supplier_name">主要仕入先名</label>
                         <input type="text" id="primary_supplier_name" name="primary_supplier_name"
                             value="<%= product.primary_supplier_name || '' %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supplier_product_name">仕入先商品名</label>
+                        <input type="text" id="supplier_product_name" name="supplier_product_name"
+                            value="<%= product.supplier_product_name || '' %>">
                     </div>
 
                     <div class="form-group">
@@ -163,6 +178,11 @@
                         <input type="text" id="accessories" name="accessories" value="<%= product.accessories || '' %>"
                             placeholder="例：　ケーブル、釘、バッテリー、ネジ">
                     </div>
+
+                    <div class="form-group">
+                        <label for="disposal_method">廃棄方法</label>
+                        <input type="text" id="disposal_method" name="disposal_method" value="<%= product.disposal_method || '' %>">
+                    </div>
                 </div>
             </div>
 
@@ -173,13 +193,25 @@
                     <textarea id="other_specs" name="other_specs" rows="4"
                         placeholder="その他の仕様や特記事項"><%= product.other_specs || '' %></textarea>
                 </div>
+            </div>
+
+            <!-- Sales Pitch -->
+            <div class="info-section">
+                <h3>おすすめポイント・セールスピッチ</h3>
+                <div class="form-group">
+                    <textarea id="sales_pitch" name="sales_pitch" rows="4">
+                        <%= product.sales_pitch || '' %></textarea>
+                </div>
+            </div>
+
+            <!-- Specification Change History -->
+            <div class="info-section">
                 <h3>仕様変更履歴</h3>
                 <div class="form-group">
                     <textarea id="spec_change_history" name="spec_change_history" rows="4"
                         placeholder="例：　2025年5月28日　カバーの色変更"><%= product.spec_change_history || '' %></textarea>
                 </div>
             </div>
-
 
             <!-- Resource Links -->
             <div class="info-section">
@@ -194,19 +226,25 @@
                 <div class="form-group">
                     <label for="packaging_link">梱包リンク</label>
                     <input type="url" id="packaging_link" name="packaging_link"
-                        value="<%= product.packaging_link || '' %>" placeholder="例：https://example.com/packaging">
+                        value="<%= product.packaging_link || '' %>" placeholder="例：https://example.com/label">
                 </div>
 
                 <div class="form-group">
                     <label for="manual_link">マニュアルリンク</label>
                     <input type="url" id="manual_link" name="manual_link" value="<%= product.manual_link || '' %>"
-                        placeholder="例：https://example.com/manual">
+                        placeholder="例：https://example.com/label">
+                </div>
+
+                <div class="form-group">
+                    <label for="usage_example_url">使用例URL</label>
+                    <input type="url" id="usage_example_url" name="usage_example_url" value="<%= product.usage_example_url || '' %>"
+                        placeholder="例：https://example.com/label">
                 </div>
 
                 <div class="form-group">
                     <label for="faq_url">FAQ</label>
                     <input type="url" id="faq_url" name="faq_url" value="<%= product.faq_url || '' %>"
-                        placeholder="例：https://example.com/manual">
+                        placeholder="例：https://example.com/label">
                 </div>
             </div>
 
@@ -495,28 +533,6 @@
             color: var(--danger);
             font-size: 0.875rem;
             margin-top: 0.25rem;
-        }
-
-        /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
-            .edit-form .product-grid.three-columns {
-                grid-template-columns: 1fr;
-            }
-
-            .edit-form .currency-pair {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .form-actions {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .form-actions .btn {
-                width: 100%;
-                text-align: center;
-            }
         }
     </style>
 

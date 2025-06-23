@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
     product_type: {
       type: DataTypes.TEXT,
       allowNull: true
-    },    
+    },
     image: {
       type: DataTypes.TEXT,
       allowNull: true
@@ -113,11 +113,32 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
 
+    pl_pb: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    usage_example_url: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    sales_pitch: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    disposal_method: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    supplier_product_name: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: DataTypes.NOW
-    },    
+    },
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -127,6 +148,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'product_list',
     timestamps: false
   });
-  
+
   return Product;
 };
