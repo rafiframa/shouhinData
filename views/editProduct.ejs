@@ -134,7 +134,7 @@
                                 </option>
                                 <option value="EUR" <%=product.supplier_cost_currency==='EUR' ? 'selected' : '' %>>EUR
                                 </option>
-                                <option value="CNY" <%=product.supplier_cost_currency==='CNY' ? 'selected' : '' %>>CNY
+                                <option value="NZD" <%=product.supplier_cost_currency==='NZD' ? 'selected' : '' %>>NZD
                                 </option>
                             </select>
                         </div>
@@ -146,7 +146,7 @@
 
                     <div class="form-group">
                         <label for="dimensions_mm">寸法 (mm)</label>
-                        <input type="number" id="dimensions_mm" name="dimensions_mm"
+                        <input type="text" id="dimensions_mm" name="dimensions_mm"
                             value="<%= product.dimensions_mm || '' %>">
                     </div>
 
